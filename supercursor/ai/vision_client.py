@@ -99,8 +99,8 @@ class VisionEngine:
         app_title: str,
         api_key: str
     ) -> Optional[VisionResult]:
-        model = self.config.get("gemini.model", "gemini-2.0-flash")
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
+        model = self.config.get("gemini.model", "gemini-flash-latest")
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
         img_b64 = base64.b64encode(image_bytes).decode("utf-8")
 
@@ -131,14 +131,19 @@ class VisionEngine:
             }
         }
 
-        with httpx.Client(timeout=15.0) as client:
-            resp = client.post(url, json=payload)
+        headers = {
+            "x-goog-api-key": api_key,
+            "Content-Type": "application/json"
+        }
+
+        with httpx.Client(timeout=20.0) as client:
+            resp = client.post(url, headers=headers, json=payload)
             if resp.status_code == 200:
                 data = resp.json()
                 text = data["candidates"][0]["content"]["parts"][0]["text"]
                 return self._parse_json_result(text, user_query)
             else:
-                print(f"[Gemini API Error] {resp.status_code}: {resp.text}")
+                print(f"[Gemini API Error] {resp.status_code}: {resp.text[:200]}")
                 return None
 
     def _call_local_ollama(

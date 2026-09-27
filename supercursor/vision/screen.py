@@ -49,12 +49,28 @@ class ScreenManager:
         self.top = self.primary_monitor["top"]
 
     def capture_screen(self, monitor_idx: int = 1) -> Image.Image:
-        """Captures a screenshot of the specified monitor and returns a PIL Image."""
+        """Captures a screenshot of the specified monitor with fallback protection."""
         if monitor_idx >= len(self.monitors):
             monitor_idx = 1 if len(self.monitors) > 1 else 0
-        sct_img = self.sct.grab(self.monitors[monitor_idx])
-        img = Image.frombytes("RGB", sct_img.size, sct_img.bgra, "raw", "BGRX")
-        return img
+
+        # Attempt 1: Fast mss capture
+        try:
+            sct_img = self.sct.grab(self.monitors[monitor_idx])
+            return Image.frombytes("RGB", sct_img.size, sct_img.bgra, "raw", "BGRX")
+        except Exception as e:
+            pass
+
+        # Attempt 2: PIL ImageGrab fallback
+        try:
+            from PIL import ImageGrab
+            return ImageGrab.grab()
+        except Exception:
+            pass
+
+        # Attempt 3: Safe blank canvas (prevents crash if screen is locked or in subshell)
+        w = max(640, self.width)
+        h = max(480, self.height)
+        return Image.new("RGB", (w, h), color=(25, 28, 36))
 
     def capture_screen_bytes(self, monitor_idx: int = 1, format="JPEG", quality=85) -> bytes:
         """Captures screenshot directly as compressed bytes for fast network sending."""

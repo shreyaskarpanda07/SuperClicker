@@ -1,7 +1,7 @@
 engine: gemini
 gemini:
   api_key: ''
-  model: gemini-2.0-flash
+  model: gemini-flash-latest
 local:
   endpoint: http://localhost:11434
   model: qwen2-vl:2b
