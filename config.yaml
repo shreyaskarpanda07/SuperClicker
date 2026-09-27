@@ -1,0 +1,39 @@
+# SuperCursor Configuration
+# Engineered by Shreyaskar Panda for personal mastery & scalable desktop AI assistance.
+
+# AI Vision Engine: 'gemini' (cloud precision) or 'local' (offline RTX 4050 GPU)
+engine: gemini
+
+gemini:
+  # Leave empty to read from GEMINI_API_KEY environment variable, or paste your key here
+  api_key: ""
+  model: gemini-2.0-flash
+
+local:
+  # Local Ollama endpoint running on your RTX 4050
+  endpoint: "http://localhost:11434"
+  model: "qwen2-vl:2b"
+  timeout: 30
+
+interaction:
+  # 'guide' (Show & Guide: draws on screen, speaks, leaves mouse free) or 'autopilot' (moves & clicks)
+  default_mode: guide
+  hotkey: "<ctrl>+<alt>+c"
+  emergency_abort_key: "esc"
+  mouse_shake_abort: true
+
+audio:
+  enabled: true
+  rate: 175
+  volume: 0.95
+  voice_index: 0
+  listen_timeout: 5
+
+visual:
+  ghost_cursor_color: "#00E5FF"
+  pulse_ring_color: "#B388FF"
+  highlight_box_color: "#00E676"
+  text_color: "#FFFFFF"
+  hud_bg: "#12141A"
+  glow_radius: 36
+  animation_fps: 60
