@@ -2,7 +2,15 @@
 __pycache__/
 *.py[cod]
 *$py.class
+# Secrets & Environment Variables (NEVER COMMITTED)
+.env
+.env.*
 *.env
+*.key
+*.pem
+secrets/
+
+# Virtual Environments
 *.venv
 env/
 venv/
