@@ -41,7 +41,25 @@ class Config:
     def __init__(self, config_path: str = "config.yaml"):
         self.config_path = Path(config_path)
         self.data = DEFAULT_CONFIG.copy()
+        self._load_env()
         self.load()
+
+    def _load_env(self):
+        """Reads .env from current directory or home directory if present."""
+        for env_path in [Path(".env"), Path.home() / ".env"]:
+            if env_path.exists():
+                try:
+                    with open(env_path, "r", encoding="utf-8") as f:
+                        for line in f:
+                            line = line.strip()
+                            if line and not line.startswith("#") and "=" in line:
+                                k, v = line.split("=", 1)
+                                k = k.strip()
+                                v = v.strip().strip("\"'")
+                                if k and not os.environ.get(k):
+                                    os.environ[k] = v
+                except Exception as e:
+                    print(f"[Config] Note reading {env_path}: {e}")
 
     def load(self):
         if self.config_path.exists():

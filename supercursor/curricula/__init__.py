@@ -2,12 +2,15 @@ from .coding_ml import CURRICULUM as CODING_ML
 from .davinci import CURRICULUM as DAVINCI
 from .figma import CURRICULUM as FIGMA
 from .fl_studio import CURRICULUM as FL_STUDIO
+from .web_google import CURRICULUM as WEB_GOOGLE
 
 ALL_CURRICULA = {
     "coding_ml": CODING_ML,
     "davinci": DAVINCI,
     "figma": FIGMA,
     "fl_studio": FL_STUDIO,
+    "google_workspace": WEB_GOOGLE,
+    "browser": WEB_GOOGLE,
 }
 
 def get_curriculum_for_app(app_type: str):

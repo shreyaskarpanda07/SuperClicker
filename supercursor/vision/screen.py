@@ -113,6 +113,11 @@ class ScreenManager:
                 info["app_type"] = "figma"
             elif "code" in proc_name or "visual studio code" in title_lower or ".py" in title_lower or ".ipynb" in title_lower:
                 info["app_type"] = "coding_ml"
+            elif any(b in proc_name for b in ["chrome", "msedge", "firefox", "brave", "opera"]):
+                if "google" in title_lower or "docs" in title_lower or "sheets" in title_lower or "slides" in title_lower:
+                    info["app_type"] = "google_workspace"
+                else:
+                    info["app_type"] = "browser"
 
         except Exception as e:
             print(f"[Screen] Error inspecting active window: {e}")
